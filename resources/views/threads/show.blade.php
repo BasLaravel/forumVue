@@ -56,7 +56,15 @@
                                                                 <span class="invalid-feedback">
                                                                     <strong>{{ $errors->first('body') }}</strong>
                                                                 </span>             
-                                                            @endif     
+                                                            @endif    
+
+                                                                     @if ($errors->has('spam'))
+                                                                <span class="invalid-feedback">
+                                                                    <strong>{{ $errors->first('spam') }}</strong>
+                                                                </span>             
+                                                            @endif    
+
+
                                                         </div>
 
                                                         <button type="submit" class="btn btn-primary">Post</button>

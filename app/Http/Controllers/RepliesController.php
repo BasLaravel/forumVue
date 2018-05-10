@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Thread;
 use App\Reply;
+use App\Inspections\Spam;
 
 
 class RepliesController extends Controller
@@ -16,15 +17,25 @@ class RepliesController extends Controller
         $this->middleware('auth');
     }
 
-
-    
-    public function store($channelId, Thread $thread, Request $request){
+/**
+ * Persist a new Reply
+ * 
+ * @param integer $channelId
+ * @param Thread $thread
+ * @param Request $request
+ * @param Spam $spam
+ * @return \Illuminate\Http\RedirectResponse
+ * 
+ */
+    public function store($channelId, Thread $thread, Request $request, Spam $spam){
 
         
         $this->validate(request(),[
             'body'=> 'required',
             ]);
-       
+
+        $spam->detect(request('body'));
+
          $thread->addReply([
 
             'body' => request('body'),

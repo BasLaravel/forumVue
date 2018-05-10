@@ -72,14 +72,21 @@ class Thread extends Model
         {
             $reply = $this->replies()->create($reply);
 
-            //meld aan iedere subscriber dat er een nieuwe reply op de thread is gekomen
+             $this->notifySubscribers($reply);
+
+        }
+
+        public function notifySubscribers($reply){
+
+        //meld aan iedere subscriber dat er een nieuwe reply op de thread is gekomen
                 foreach($this->subscriptions as $subscription){
                     if($subscription->user_id != $reply->user_id){
                     $subscription->user->notify(new ThreadWasUpdated($this, $reply));
                     }
                 }
-
         }
+
+
 
 
         public function latestReply()

@@ -64,7 +64,7 @@
                                     Notifications
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <p class="dropdown-item" v-show="standaardmessage">U heeft geen notificaties</p>
+                                    <a class="dropdown-item" v-show="standaardmessage">U heeft geen notificaties</a>
                                     <a class="dropdown-item" :href="value.link" v-for="(value, key) in data"
                                        v-text="value.message" @click="markAsRead(value.id)"></a>           
                                 </div>  
