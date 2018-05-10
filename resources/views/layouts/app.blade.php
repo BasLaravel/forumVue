@@ -31,6 +31,9 @@
         <main  class="py-4">
             @yield('content')
 
+        @if (Session::has('message'))
+        <div id="flash" class="alert alert-info" v-show="flashSession">{{ Session::get('message') }} </div>
+        @endif
         <div id="flash-vue"  v-bind:class="status"  v-show="flashVue" v-text="tekst"></div>
         <div class="loader" v-if="window.load"></div>    
         

@@ -30,6 +30,6 @@ class UserNotificationsController extends Controller
     public function destroy($user, $notificationId){
 
     $user=User::find($user);
-    $user->notifications()->findOrfail($notificationId)->markAsRead();
+    $user->notifications()->findOrfail($notificationId)->delete();
     }
 }

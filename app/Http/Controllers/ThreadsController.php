@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Filters\ThreadFilters;
 use App\Channel;
 use App\Thread;
+use App\Inspections\Spam;
 
 use Illuminate\Http\Request;
 
@@ -51,11 +52,9 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'title'=> 'required|max:100',
-            'body'=> 'required',
-            'channel_id'=> 'required|exists:channels,id' 
-        ]);
+     
+        $this->validateThread();
+
 
         $thread = Thread::create([
         'title'=> request('title'),
@@ -64,8 +63,10 @@ class ThreadsController extends Controller
         'user_id'=> auth()->id()
         ]);
 
+       
         session()->flash('message', 'Uw thread is gepost.');
         return redirect(route('thread.show', [$thread->channel->slug, $thread->id]));
+  
             
     }
 
@@ -123,6 +124,21 @@ class ThreadsController extends Controller
 
         return redirect('/threads');
     }
+
+
+    protected function validateThread(){
+
+        $this->validate(request(),[
+            'title'=> 'required|max:100',
+            'body'=> 'required',
+            'channel_id'=> 'required|exists:channels,id' 
+        ]);
+
+        resolve(Spam::class)->detect(request('body'));
+    }
+
+
+
 
 /**
      * bouwt een query op

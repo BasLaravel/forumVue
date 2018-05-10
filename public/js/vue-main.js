@@ -33,6 +33,7 @@ new Vue({
 
     data:{
         flashVue: false,
+        flashSession:true,
         tekst:'',
         status:'alert alert-info',
   },
@@ -50,14 +51,17 @@ new Vue({
          this.tekst=tekst.message;
          setTimeout(()=>{ this.flashVue = false; }, 2000);
          
-     }
+     },
 
- 
+     delayFlashSession(){
+        setTimeout(()=>{ this.flashSession = false; }, 2000);
+     }
 
 },
 
 created(){
     window.events.$on('flash',this.flash);
+    this.delayFlashSession();
 }
 
 

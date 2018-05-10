@@ -18,6 +18,7 @@ Vue.component('replies', {
     
         methods: {
             updateReply(){
+                this.errors={};
                 axios.patch('/replies/'+ this.attribuut.id,{body:this.body})
                 .then((response) => {
                     this.bewerk=false;

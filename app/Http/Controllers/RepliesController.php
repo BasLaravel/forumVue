@@ -23,25 +23,20 @@ class RepliesController extends Controller
  * @param integer $channelId
  * @param Thread $thread
  * @param Request $request
- * @param Spam $spam
  * @return \Illuminate\Http\RedirectResponse
  * 
  */
-    public function store($channelId, Thread $thread, Request $request, Spam $spam){
+    public function store($channelId, Thread $thread, Request $request){
 
-        
-        $this->validate(request(),[
-            'body'=> 'required',
-            ]);
-
-        $spam->detect(request('body'));
-
+        $this->validateReply();
+     
          $thread->addReply([
 
             'body' => request('body'),
             'user_id' => auth()->id()
 
         ]);
+        session()->flash('message', 'Uw antwoord is gepost.');
        return redirect('/threads/'.$thread->channel->slug.'/'.$thread->id);
     }
 
@@ -62,21 +57,25 @@ class RepliesController extends Controller
 
     public function update(Reply $reply)
     {
-        
-        $this->validate(request(),[
-            'body'=> 'required|min:2'
-   
-            ]);
-
+       
         $this->authorize('update', $reply);
 
-        $body=request('body');
+        $this->validateReply();
 
+        $body=request('body');
         $reply->update(['body'=>$body]);
 
            
     }
 
+    protected function validateReply(){
+
+        $this->validate(request(),[
+            'body'=> 'required',
+            ]);
+
+        resolve(Spam::class)->detect(request('body'));
+    }
 
 
 

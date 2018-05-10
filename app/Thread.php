@@ -87,8 +87,6 @@ class Thread extends Model
         }
 
 
-
-
         public function latestReply()
         {
             return $this->replies()->latest()->first()->id;

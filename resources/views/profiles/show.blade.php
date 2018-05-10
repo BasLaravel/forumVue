@@ -8,7 +8,7 @@
             <div class="page-header">
                 <h1>
                     {{$profileUser->name}}
-                    <small>Since {{$profileUser->created_at->diffForHumans()}}</small>
+                    <small>Lid sinds {{$profileUser->created_at->format('d/m/Y')}}</small>
                 </h1>
                 <hr>
    

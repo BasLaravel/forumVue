@@ -16,8 +16,9 @@ class InvalidKeywords
         foreach($this->keywords as $keyword){
          
                 if(stripos($body,$keyword)!==false){
-                   
-                throw new Exception('Your reply contains spam');
+                $error= \Illuminate\Validation\ValidationException::withMessages(['body'=> 'Dit is spam']); 
+                //throw new Exception('Your reply contains spam');
+                throw $error;
                 }
 
         }

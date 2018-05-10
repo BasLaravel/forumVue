@@ -24,14 +24,12 @@ Vue.component('notifications-dropdown', {
                                 }else{this.standaardmessage=true;}
                 })
                 .catch((error) => {
-                    this.errors=error.response.data.errors; 
                 });
             },
     
            markAsRead(notifications_id){
             axios.delete('/profiles/'+this.attribuutuserid+'/notifications/'+notifications_id)
             .catch((error) => {
-                    this.errors=error.response.data.errors; 
                 });
            
            } 

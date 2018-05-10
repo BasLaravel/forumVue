@@ -58,11 +58,7 @@
                                                                 </span>             
                                                             @endif    
 
-                                                                     @if ($errors->has('spam'))
-                                                                <span class="invalid-feedback">
-                                                                    <strong>{{ $errors->first('spam') }}</strong>
-                                                                </span>             
-                                                            @endif    
+                                                       
 
 
                                                         </div>
