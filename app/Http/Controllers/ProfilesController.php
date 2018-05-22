@@ -9,13 +9,12 @@ class ProfilesController extends Controller
 {
     public function show(\App\User $user)
     {
-      
-    $profileUser = $user;
-    
-    $activities=Activity::feed($user);
+        $profileUser = $user;
+        
+        $activities=Activity::feed($user);
     
    
-        return view('profiles.show',compact('profileUser','activities'));
+    return view('profiles.show',compact('profileUser','activities'));
 
     }
 

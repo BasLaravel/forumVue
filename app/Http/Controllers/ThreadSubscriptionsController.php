@@ -17,23 +17,20 @@ class ThreadSubscriptionsController extends Controller
 
     public function store($channelId, Thread $thread, Request $request)
     {
-     
-    if(!$thread->subscriptions()->where(['user_id'=>auth()->id()])->exists()){
+        if(!$thread->subscriptions()->where(['user_id'=>auth()->id()])->exists()){
+            
+            $thread->subscribe();
         
-        $thread->subscribe();
-      
-    }
+        }
             
     }
 
     public function destroy($channelId, Thread $thread, Request $request)
     {
-     
         if($thread->subscriptions()->where(['user_id'=>auth()->id()])->exists()){
 
          $thread->subscriptions()->where(['user_id'=>auth()->id()])->get()->each->delete();
-
-         
+   
     }
             
     }

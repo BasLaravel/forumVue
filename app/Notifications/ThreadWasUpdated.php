@@ -60,7 +60,7 @@ class ThreadWasUpdated extends Notification
     {
         return [
             'message'=> $this->reply->owner->name.' heeft geantwoord op: '. substr($this->thread->title, 0, 14),
-            'link' => '/threads/'.$this->thread->channel->slug.'/'.$this->thread->id.'#reply-'.$this->reply->id,
+            'link' => '/threads/'.$this->thread->channel->slug.'/'.$this->thread->slug.'#reply-'.$this->reply->id,
             'id' => $this->id
         ];
     }

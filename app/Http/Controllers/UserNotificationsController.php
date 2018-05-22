@@ -14,10 +14,10 @@ class UserNotificationsController extends Controller
 
     
     public function index($user){
-
-    $user=User::find($user);
-
         $ar=[];
+
+        $user=User::find($user);
+
         foreach($user->unreadNotifications as $data){
             $ar[]=$data->data;
         }

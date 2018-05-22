@@ -7,9 +7,9 @@
   position:fixed;
   top:40%;
   left:40%;
-  border: 16px solid #f3f3f3;
+  border: 8px solid lightgray;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
+  border-top: 8px solid blue;
   width: 120px;
   height: 120px;
   -webkit-animation: spin 2s linear infinite; /* Safari */
@@ -38,9 +38,18 @@ body{
     right: 25px;
     top: 50px;
 }
+
 #flash-vue{
     position:fixed;
     right: 25px;
     top: 50px;
 
+}
+
+#post-reply-scan-op-naam{
+  cursor:pointer;
+}
+
+ p.namelist:hover{
+  background-color: lightblue;
 }

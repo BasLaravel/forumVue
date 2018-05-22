@@ -2,7 +2,7 @@
     <div class="card-header row">
             <h5 class="col-md-8" >
                 <a href="{{ route('thread.show',
-              [$activity->subject->favorited->thread->channel->slug, $activity->subject->favorited->thread->id ])
+              [$activity->subject->favorited->thread->channel->slug, $activity->subject->favorited->thread->slug])
               .'#reply-'.$activity->subject->favorited->id }}">
                     {{$profileUser->name}} Liked a reply.
                 </a>

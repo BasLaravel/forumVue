@@ -30,7 +30,11 @@ class ReplyPolicy
      */
     public function create(User $user)
     {
-        //
+        $lastReply= $user->fresh()->lastReply;
+        
+        if(!$lastReply) return true;
+
+        return ! $lastReply->wasJustPublished();
     }
 
     /**
@@ -42,7 +46,7 @@ class ReplyPolicy
      */
     public function update(User $user, Reply $reply)
     {
-        return $reply->user_id == $user->id;  
+        return $reply->user_id === $user->id;  
     }
 
     /**

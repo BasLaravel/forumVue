@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Traits;
+
+use App\Activity;
 
 trait RecordsActivity
 {
@@ -18,10 +20,9 @@ trait RecordsActivity
                 $model->activity()->delete();
                 });
 
-
-
     }
 
+    
     protected function recordActivity($event){
         Activity::create([
                     'user_id' => auth()->id(),
@@ -30,6 +31,8 @@ trait RecordsActivity
                     'subject_type' => get_class($this)
                 ]);
         }
+
+
 
     public function activity()
     {

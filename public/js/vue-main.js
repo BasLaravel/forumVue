@@ -29,7 +29,7 @@ axios.interceptors.response.use((response) => {
 new Vue({
     el:'#app',
 
-    
+   
 
     data:{
         flashVue: false,
@@ -43,6 +43,7 @@ new Vue({
      flash(tekst){
          if(tekst.danger=='0'){
             this.status='alert alert-info';
+          
          }else{ 
              this.status='alert alert-danger';
          };

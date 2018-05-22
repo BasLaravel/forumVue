@@ -22,7 +22,6 @@ class FavoritesController extends Controller
 
     public function store(Reply $reply)
     {
-
         if(!$reply->favorites()->where(['user_id'=>auth()->id()])->exists()){
              Favorite::create([
                 'user_id'=> auth()->id(),
@@ -37,7 +36,6 @@ class FavoritesController extends Controller
      
        }
 
-       
     }
 
 

@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','avatar_patch','confirmation_token','confirmed'
     ];
 
     /**
@@ -24,8 +24,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email',
+        'password', 'remember_token', 'email', 
     ];
+
+
+    protected $cast = ['confirmed'=> 'boolean'];
+
 
     public function getRouteKeyName(){
         return 'name';
@@ -38,4 +42,18 @@ class User extends Authenticatable
     public function activity(){
         return $this->hasMany('App\Activity');
     }
+
+    public function lastReply(){
+        return $this->hasOne('App\Reply')->latest();
+    }
+
+    public function getAvatarPatchAttribute($avatar){
+        if($avatar){
+            return '/storage/'.$avatar;
+        }else{
+            return '/storage/avatars/avatar-placeholder.png';
+        };
+    }
+
+
 }

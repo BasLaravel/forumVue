@@ -4,18 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Favorite;
+use Carbon\Carbon;
 
 
 class Reply extends Model
 {
 
-    use RecordsActivity;
+    use Traits\RecordsActivity;
     
     protected $guarded =[];
 
     protected $with=['owner','favorites'];
 
-    protected $appends = ['favoritesCount', 'isFavorited', 'testCount'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'axiosCount'];
 
     protected static function boot()
     {
@@ -61,6 +62,13 @@ class Reply extends Model
 
     }
 
+    public function wasJustPublished(){
+        return $this->created_at->gt(Carbon::now()->subMinute());
+    }
+
+
+
+
     //-------------------------------Attributen--------------------------------------------
     
     public function getFavoritesCountAttribute() 
@@ -69,17 +77,23 @@ class Reply extends Model
 
     }
 
+    
     public function getIsFavoritedAttribute() 
     {
         return $this->isFavorited();
 
     }
 
-    public function getTestCountAttribute() 
+
+    public function getAxiosCountAttribute() 
     {
         return $this->thread->replies_count;
       
+    }
 
+
+    public function setBodyAttribute($body){
+        $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
     }
 
 

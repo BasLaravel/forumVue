@@ -3,14 +3,14 @@
 namespace App\Inspections;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
 
 class KeyHeldDown
 {
 
-    public function detect($body){
-        if(preg_match('/(.)\\1{4,}/u', $body)){
-          $error= \Illuminate\Validation\ValidationException::withMessages(['body'=> 'Dit is spam']);  
-           // throw new Exception('Your reply contains spam');
+    public function detect($request, $name){
+        if(preg_match('/(.)\\1{4,}/u', $request)){
+          $error = ValidationException::withMessages([$name => ['Dit is spam']]);  
            throw $error;
         }
         

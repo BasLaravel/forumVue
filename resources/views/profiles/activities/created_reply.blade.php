@@ -8,7 +8,7 @@
             {{$profileUser->name}}
          
              replied to <a href="{{ route('thread.show',
-              [$activity->subject->thread->channel->slug, $activity->subject->thread->id
+              [$activity->subject->thread->channel->slug, $activity->subject->thread->slug
               .'#reply-'.$activity->subject->id  ]) }}">
               "{{$activity->subject->thread->title}}" </a>            
             </h5>

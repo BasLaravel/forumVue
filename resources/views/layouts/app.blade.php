@@ -53,6 +53,8 @@ window.flash = function(message){
 window.events.$emit('flash', message);
 };
 window.load='';
+window.auth=@if(Auth::check()) {{Auth::user()->id}} @else false @endif;
+
 </script>
 
 <script src="{{ asset('js/vue-component-thread-info-paneel.js') }}"></script>

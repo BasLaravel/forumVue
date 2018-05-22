@@ -12,10 +12,10 @@ protected $inspections=[
 ];
 
 
-public function detect($body){
+public function detect($request, $name){
 
     foreach($this->inspections as $inspection){
-        app($inspection)->detect($body);
+        app($inspection)->detect($request, $name);
     }
     return false;
 }

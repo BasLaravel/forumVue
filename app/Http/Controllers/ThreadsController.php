@@ -6,6 +6,7 @@ use App\Filters\ThreadFilters;
 use App\Channel;
 use App\Thread;
 use App\Inspections\Spam;
+use App\Trending;
 
 use Illuminate\Http\Request;
 
@@ -23,15 +24,18 @@ class ThreadsController extends Controller
      * 
      * gebruikt queryIndexBuilder($channel) methode
      * 
-     * @return \Illuminate\Http\Response
+     * 
      */
-    public function index(Channel $channel)
+    public function index($channel=null, Trending $trending)
     {
+        $threads=($this->queryIndexBuilder($channel)->get());   
 
-         $threads=($this->queryIndexBuilder($channel)->get());   
-
-       return view('threads.index',compact('threads'));
+       return view('threads.index', [
+           'threads' => $threads,
+           'trending' => $trending->get()
+       ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,6 +48,7 @@ class ThreadsController extends Controller
     }
 
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -52,23 +57,20 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-     
         $this->validateThread();
-
 
         $thread = Thread::create([
         'title'=> request('title'),
         'channel_id'=> request('channel_id'),
         'body'=> request('body'),
-        'user_id'=> auth()->id()
+        'user_id'=> auth()->id(),
+        'slug'=> str_slug(request('title'))
         ]);
 
-       
         session()->flash('message', 'Uw thread is gepost.');
-        return redirect(route('thread.show', [$thread->channel->slug, $thread->id]));
-  
-            
+        return redirect(route('thread.show', [$thread->channel->slug, $thread->slug]));      
     }
+
 
     /**
      * Display the specified resource.
@@ -76,13 +78,18 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channel, Thread $thread)
+    public function show($channel, Thread $thread, Trending $trending)
     {
         $replies= $thread->replies()->paginate(25);
     
+        $trending->push($thread);
+
+        $thread->visits()->record();
+            
         return view('threads.show',compact('thread','replies'));
 
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -94,6 +101,7 @@ class ThreadsController extends Controller
     {
         //
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -107,23 +115,26 @@ class ThreadsController extends Controller
         //
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy($channel, Thread $thread)
+    public function destroy($channel, Thread $thread, Trending $trending)
     {
-   
         $this->authorize('update', $thread);
 
         $thread->delete();
 
+        $thread->visits()->delete();
+       
         session()->flash('message', 'Uw thread is verwijderd.');
 
         return redirect('/threads');
     }
+
 
 
     protected function validateThread(){
@@ -134,9 +145,9 @@ class ThreadsController extends Controller
             'channel_id'=> 'required|exists:channels,id' 
         ]);
 
-        resolve(Spam::class)->detect(request('body'));
+        resolve(Spam::class)->detect(request('title'), 'title');
+        resolve(Spam::class)->detect(request('body'), 'body');
     }
-
 
 
 
@@ -152,10 +163,10 @@ class ThreadsController extends Controller
      *
      */
     public function queryIndexBuilder($channel)
-    {
-        if($channel->exists){
+    {  
+        if(!empty($channel)){
+            $channel = Channel::where('name',$channel)->firstOrFail();
             $threads = $channel->threads()->latest();
-           
         }else{
         $threads = Thread::latest();
         }
@@ -173,9 +184,6 @@ class ThreadsController extends Controller
         if(request('unanswered')){
             $threads->where('replies_count', 0);
             }
-
-
-
 
         return $threads;
     }

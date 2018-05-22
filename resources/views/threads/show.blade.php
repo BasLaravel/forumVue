@@ -2,18 +2,21 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row ">
     {{--left part of the screen--}}
             <div class="col-md-8">
                 <div class="card mb-3 container">
-                    <div class="card-header row bg-info">
-                        <div class="col-md-10">
-                            <a href="{{route('profile.show',[$thread->creator->name])}}">{{$thread->creator->name}}</a>
+                    <div class="card-header row bg-info" style="padding:4px 4px 4px 0px;">
+
+                    
+                        <div class="col-md-10 ">
+                        <img src="{{$thread->creator->avatar_patch}}"  style="margin-right:7px;" alt="" width="40px" height="40px">
+                            <a href="{{route('profile.show',[$thread->creator->name])}}" style="margin-right:5px;" >{{$thread->creator->name  }}</a>
                             posted:
                             {{$thread->title}}
                         </div>
                         @can('update', $thread)
-                        <form class="col-md-2" method="POST" action="{{ route('thread.destroy', [$thread->channel->slug, $thread->id]) }}">
+                        <form class="col-md-2" method="POST" action="{{ route('thread.destroy', [$thread->channel->slug, $thread->slug]) }}">
                             {{csrf_field() }}
                             {{method_field('DELETE')}}
                             <button type="submit" 
@@ -33,7 +36,7 @@
                        
                         @foreach($replies as $reply)
                             @include('threads.reply')
-                            @endforeach
+                        @endforeach
                        
                        {{$replies->links()}}
                       
@@ -45,22 +48,29 @@
                                     <div class="card mb-3">
                                         <div class="card-header">Reply?</div>
                                             <div class="card-body">
-                                                    <form method="POST" action="{{ route('reply.store', [$thread->channel->slug, $thread->id]) }}">
+                                                    <form method="POST" action="{{ route('reply.store', [$thread->channel->slug, $thread->slug]) }}">
                                                     @csrf
-                                                        <input type="hidden" name="redirects_to" value="{{URL::previous()}}">
-                                                     
+                                    
                                                         <div class="form-group">
-                                                            <textarea class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" id="body" cols="10" rows="5"></textarea>
-                                
-                                                            @if ($errors->has('body'))
-                                                                <span class="invalid-feedback">
-                                                                    <strong>{{ $errors->first('body') }}</strong>
-                                                                </span>             
-                                                            @endif    
+                                                            <textarea-scan-op-naam inline-template>
+                                                                <div>
+                                                                    <textarea class="form-control{{ $errors->has('body') ? ' is-invalid' : '' }}" name="body" id="post-reply-textarea" cols="10" rows="5"
+                                                                    v-model="textarea" :value="textarea" @input="scan()"
+                                                                    ref="postreplytextarea"></textarea>
+                                                                    <div class="form-control" id="post-reply-scan-op-naam" v-show="opties"> 
+                                                                        <p class="namelist" v-for="namen in nameArray" v-text="namen" @click="plukNaam(namen)"></p>
+                                                                    </div>
 
-                                                       
+                                                                    @if ($errors->has('body'))
+                                                                    <span class="invalid-feedback">
+                                                                        <strong>{{ $errors->first('body') }}</strong>
+                                                                    </span>             
+                                                                    @endif    
 
-
+                                                                </div>
+                                               
+                                                            </textarea-scan-op-naam>
+                                      
                                                         </div>
 
                                                         <button type="submit" class="btn btn-primary">Post</button>

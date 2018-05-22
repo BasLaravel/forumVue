@@ -5,10 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Notifications\ThreadWasUpdated;
 
+
+
+use App\Events\ThreadReceivedNewReply;
+
 class Thread extends Model
 {
-
-    use RecordsActivity;
+    use Traits\RecordsActivity, Traits\RecordsVisits;
 
     protected $guarded =[];
     protected $with=['creator', 'channel'];
@@ -26,6 +29,10 @@ class Thread extends Model
             $thread->replies->each->delete();
         });
 
+    }
+
+    public function getRouteKeyname(){
+        return 'slug';
     }
 
 
@@ -62,7 +69,10 @@ class Thread extends Model
     }
 
 
+   public function visits(){
 
+    return new Visits($this);
+   }
 
 
 //---------------------------------custom-model-functies------------------------------------------------------
@@ -72,21 +82,13 @@ class Thread extends Model
         {
             $reply = $this->replies()->create($reply);
 
-             $this->notifySubscribers($reply);
+            event(new ThreadReceivedNewReply($reply));
+
+             return $reply;
 
         }
 
-        public function notifySubscribers($reply){
-
-        //meld aan iedere subscriber dat er een nieuwe reply op de thread is gekomen
-                foreach($this->subscriptions as $subscription){
-                    if($subscription->user_id != $reply->user_id){
-                    $subscription->user->notify(new ThreadWasUpdated($this, $reply));
-                    }
-                }
-        }
-
-
+  
         public function latestReply()
         {
             return $this->replies()->latest()->first()->id;
@@ -110,6 +112,14 @@ class Thread extends Model
     }
 
 
+    public function path(){
+
+        $path = '/threads/' . $this->channel->slug .'/'. $this->slug;
+
+        return $path;
+    }
+
+
      //-------------------------------Attributen--------------------------------------------
     
      public function getIsSubscribedAttribute() 
@@ -118,8 +128,35 @@ class Thread extends Model
        return $count;
      }
 
-   
 
+
+    public function setSlugAttribute($title){
+
+        $slug = str_slug($title);
+
+        if(static::whereSlug($slug)->exists()){
+
+            $slug= $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+
+
+    public function incrementSlug($slug){
+
+        $max = static::whereTitle($this->title)->latest('id')->value('slug');
+
+        if(is_numeric($max[-1])){
+            return preg_replace_callback('/(\d+)$/', function($matches){
+                return $matches[1]+1;
+            }, $max);
+        }
+
+        return "{$slug}-2";
+
+    }
 
 
 }

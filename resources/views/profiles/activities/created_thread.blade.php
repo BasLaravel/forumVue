@@ -6,7 +6,7 @@
             
              published a thread: 
              <a href="{{ route('thread.show',
-              [$activity->subject->channel->slug, $activity->subject->id ]) }}">{{$activity->subject->title}} 
+              [$activity->subject->channel->slug, $activity->subject->slug ]) }}">{{$activity->subject->title}} 
               </a>
             
             

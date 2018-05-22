@@ -8,20 +8,20 @@ Vue.component('thread-info-paneel', {
             repliesAantal:this.attribuutrepliesaantal,
             subscription:this.attribuut.isSubscribed,
             slug:this.attribuut.channel.slug,
-            id:this.attribuut.id
+            slug:this.attribuut.slug
             }
         },
     
     methods: {
         
-        updateCount(r_Aantal){
-         this.repliesAantal=r_Aantal.repliesAantal;
+        updateCount(axiosCount){
+         this.repliesAantal=axiosCount.repliesAantal;
         },
 
 
         subscribeToThread(){
             if(!this.subscription){
-                axios.post('/threads/'+this.slug+'/'+this.id+'/subscriptions')
+                axios.post('/threads/'+this.slug+'/'+this.slug+'/subscriptions')
                .then((response) => {
                    flash({message:'U volgt nu deze thread', danger:'0'});
                    this.subscription=true;
@@ -33,7 +33,7 @@ Vue.component('thread-info-paneel', {
                
                });
             }else{
-                axios.delete('/threads/'+this.slug+'/'+this.id+'/subscriptions')
+                axios.delete('/threads/'+this.slug+'/'+this.slug+'/subscriptions')
                 .then((response) => {
                     flash({message:'U volgt nu deze thread niet meer', danger:'0'});
                     this.subscription=false;

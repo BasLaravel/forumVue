@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Thread;
 use App\Reply;
+use App\User;
 use App\Inspections\Spam;
+use App\Notifications\YouWereMentioned;
+use Illuminate\Validation\ValidationException;
 
 
 class RepliesController extends Controller
@@ -16,6 +19,7 @@ class RepliesController extends Controller
     {
         $this->middleware('auth');
     }
+
 
 /**
  * Persist a new Reply
@@ -28,36 +32,42 @@ class RepliesController extends Controller
  */
     public function store($channelId, Thread $thread, Request $request){
 
+        try{
+            $this->authorize('create', new Reply);
+           } catch(\Exception $e){
+                $error = ValidationException::withMessages(['body'=> ['Te snel, neem even pauze']]);  
+                     throw $error;
+           }
+
         $this->validateReply();
      
-         $thread->addReply([
-
+        $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
-
         ]);
-        session()->flash('message', 'Uw antwoord is gepost.');
-       return redirect('/threads/'.$thread->channel->slug.'/'.$thread->id);
+
+
+       session()->flash('message', 'Uw antwoord is gepost.');
+       return redirect('/threads/'.$thread->channel->slug.'/'.$thread->slug);
     }
 
 
+    
 
-        public function destroy(Request $request, Reply $reply)
+    public function destroy(Request $request, Reply $reply)
     {
-       
         $this->authorize('update', $reply);
 
-         $reply->delete();
+        $reply->delete();
 
         return response($reply);
 
-    
     }
 
 
+
     public function update(Reply $reply)
-    {
-       
+    {   
         $this->authorize('update', $reply);
 
         $this->validateReply();
@@ -65,16 +75,18 @@ class RepliesController extends Controller
         $body=request('body');
         $reply->update(['body'=>$body]);
 
+        return response(request('body'));
            
     }
 
-    protected function validateReply(){
 
+    protected function validateReply(){
+  
         $this->validate(request(),[
             'body'=> 'required',
             ]);
 
-        resolve(Spam::class)->detect(request('body'));
+        resolve('App\Inspections\Spam')->detect(request('body'), 'body');
     }
 
 
