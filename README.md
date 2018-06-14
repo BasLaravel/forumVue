@@ -55,11 +55,11 @@ My-profile
  - kies een avatar (layout nog erg basic)
    
 Enkele aandachtspunten:
-de admin 'backend' is nog niet voltooid.
+De admin 'backend' is nog niet voltooid.
 Op sommige pagina's worden nog teveel queries gedaan. 
 De kanalen moeten nu nog handmatig in de DB worden gezet.
 Voor de eerste opzet heb gebruik gemaakt van jQuery. Echter heb ik in deze versie gebruik gemaakt van Vue 2.0 in combinatie met axios. 
-
+Op dit moment (als ik opnieuw zou starten) zou ik mijn javascript documenten met webpack/laravel-mix ordenen. 
 
 Hopelijk geeft dit enig inzicht.
 Met vriendelijke groet,
