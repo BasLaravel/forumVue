@@ -20,7 +20,7 @@ Login en Registratie:
  - Alle functionaliteit die we gewend zijn via make:auth (out of the box)
  - Confirmatie email.
  - Er kunnen geen nieuwe threads worden gemaakt als er geen bevestiging is ontvangen per email.
-
+-------------------------------------------
 Browse:
 - alle threads
 - mijn threads
@@ -45,8 +45,8 @@ Browse:
   - aantal spamfilters; keydown en blacklist.(App/Inspections)
 -------------------------------------------------
 Krijg 'notifications' wanneer:
-  -iemand een thread volgt en daar een nieuw bericht is geplaatst. (in DB en Email)
-  -Als iemand je heeft genoemd in een reply bijvoorbeeld @John; John krijgt een bericht als hij inlogd
+  - iemand een thread volgt en daar een nieuw bericht is geplaatst. (in DB en Email)
+  - Als iemand je heeft genoemd in een reply bijvoorbeeld @John; John krijgt een bericht als hij inlogd
 -------------------------------------------------
 My-profile
  - zie je eigen replies
