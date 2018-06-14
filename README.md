@@ -1,6 +1,6 @@
 # forumVue
 
-Dit is code voor een forum waar ik aan werk. Het is nog niet afgerond. Maar zo kunnen jullie mijn code in zien.
+Dit is code voor een forum waar ik aan werk. Het is nog niet geheel afgerond. Maar zo kunnen jullie mijn code in zien.
 
 De volgende zaken kunnen jullie in zien, om er een paar te noemen:
 - controllers
