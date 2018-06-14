@@ -32,6 +32,11 @@ class RepliesController extends Controller
  */
     public function store($channelId, Thread $thread, Request $request){
 
+
+        if($thread->locked){
+            return response('Thread is locked', 422);
+        }
+
         try{
             $this->authorize('create', new Reply);
            } catch(\Exception $e){

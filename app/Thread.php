@@ -16,6 +16,7 @@ class Thread extends Model
     protected $guarded =[];
     protected $with=['creator', 'channel'];
     protected $appends=['isSubscribed'];
+    protected $casts = ['locked' => 'boolean'];
    
 
     
@@ -28,6 +29,11 @@ class Thread extends Model
         static::deleting(function($thread){
             $thread->replies->each->delete();
         });
+
+        static::created(function($thread){
+            $thread->update(['slug' => $thread->title]);
+        });
+
 
     }
 
@@ -73,6 +79,7 @@ class Thread extends Model
 
     return new Visits($this);
    }
+
 
 
 //---------------------------------custom-model-functies------------------------------------------------------
@@ -136,7 +143,7 @@ class Thread extends Model
 
         if(static::whereSlug($slug)->exists()){
 
-            $slug= $this->incrementSlug($slug);
+            $slug= "{$slug}-".$this->id;
         }
 
         $this->attributes['slug'] = $slug;
@@ -144,19 +151,7 @@ class Thread extends Model
 
 
 
-    public function incrementSlug($slug){
 
-        $max = static::whereTitle($this->title)->latest('id')->value('slug');
-
-        if(is_numeric($max[-1])){
-            return preg_replace_callback('/(\d+)$/', function($matches){
-                return $matches[1]+1;
-            }, $max);
-        }
-
-        return "{$slug}-2";
-
-    }
 
 
 }

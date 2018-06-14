@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Thread')->latest();
     }
 
+    public function isAdmin(){
+        return in_array($this->name, ['Bas']);
+    }
+
     public function activity(){
         return $this->hasMany('App\Activity');
     }

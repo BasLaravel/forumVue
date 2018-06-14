@@ -1,7 +1,7 @@
 
 <replies inline-template :attribuut="{{$reply}}" >
 <div id="reply-{{$reply->id}}" class="card mb-3 container" v-show="showReply">
-        <div class="card-header row" style="background-color:rgb(242, 255, 230);">
+        <div class="card-header row" :class="isBest ? 'bg-success' : 'bg-light'">
             <h5 class="col-md-9" >
             <a href="{{route('profile.show',[$reply->owner->name])}}">
             {{$reply->owner->name}}
@@ -50,21 +50,34 @@
              </div>   
         </div>
 
-        @can('update', $reply) 
-         
+ 
+       @if(Auth()->check())
+             @if( Auth::user()->can('update', $reply) || Auth::user()->can('update', $reply->thread))
                 <div class="card-footer row" style="background-color:rgb(242, 255, 230);">
+
+                  @can('update', $reply) 
                     <div class="mr-3">
-                    <button id="{{$reply->id}}" 
-                        class="btn btn-info btn-sm" @click="bewerk=true" >
-                        Bewerk
-                    </button>
+                        <button id="{{$reply->id}}" 
+                            class="btn btn-info btn-sm" @click="bewerk=true" >
+                            Bewerk
+                        </button>
                     </div>
+                    <div>
                         <button id="delete-{{$reply->id}}"  
                         class="btn btn-danger btn-sm" @click="deleteReply">
                         Verwijder Reply</button>
+                    </div>
+                     @endcan
+                    @can('update', $reply->thread) 
+                    <div class="ml-auto" v-show=" ! isBest">
+                        <button  
+                        class="btn btn-sm" @click="markBestReply">
+                        Beste antwoord?</button>
+                    </div>
+                     @endcan
                 </div>
-        
-        @endcan
+            @endif
+      @endif
 </div>
 </replies>
 

@@ -19,8 +19,21 @@ $factory->define(App\User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
-        'confirmed' => false
+        'confirmed' => true
     ];
+});
+
+$factory->state(App\User::class, 'unconfirmed', function (){
+    return [
+        'confirmed' => 'false'
+    ];
+});
+
+
+$factory->state(App\User::class, 'administrator', function (){
+        return [
+            'name' => 'Bas'
+        ];
 });
 
 
@@ -35,7 +48,8 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         },
         'title' => $title,
         'body' => $faker->paragraph,
-        'slug' => str_slug($title)
+        'slug' => str_slug($title),
+        'locked' => false
     ];
 });
 

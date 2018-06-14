@@ -11,7 +11,9 @@ Vue.component('replies', {
             showReply:true,
             buttontype:'',
             isLiked:this.attribuut.isFavorited,
-            favoritesCount:this.attribuut.favoritesCount
+            favoritesCount:this.attribuut.favoritesCount,
+            isBest:this.attribuut.isBest
+          
             }
             
         },
@@ -72,14 +74,34 @@ Vue.component('replies', {
                 .catch((error) => {
                 });
             }
+            },
+
+            markBestReply(){
+                axios.post('/replies/'+ this.attribuut.id + '/best')
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+                
+                events.$emit('best-reply-selected', this.attribuut.id);
             }
+    
        },
     
     
        created(){
+
         if(this.attribuut.isFavorited){
                     this.buttontype='col-md-auto ml-auto btn btn-sm bg-primary';
                 }else{this.buttontype='col-md-auto ml-auto btn btn-sm bg-secondary'};
+
+        events.$on('best-reply-selected', id => {
+            this.isBest = (id === this.attribuut.id)
+           
+        });
+
        }
        
     });
@@ -127,6 +149,9 @@ Vue.component('textarea-scan-op-naam', {
         update(){
             this.$emit('update', this.textarea);
         }
+
+
+
    }
 
 });

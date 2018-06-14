@@ -1,10 +1,11 @@
 //--------------------------axios interceptors-----------------------
 // Add a request interceptor
 axios.interceptors.request.use((config) => {
-    window.load=true;
+    window.load=false;
     config.timeout=5000;
     return config;
   }, (error) => {
+      console.log(error);
     flash({message:'Fout op de server', danger:'1'});
     return Promise.reject(error);
   });
@@ -15,6 +16,7 @@ axios.interceptors.response.use((response) => {
    
     return response;
   },(error) => {
+    console.log(error);
     if(error.response.status > '499'){
                     flash({message:'Fout op de server', danger:'1'});
                     }
@@ -29,17 +31,19 @@ axios.interceptors.response.use((response) => {
 new Vue({
     el:'#app',
 
-   
 
     data:{
         flashVue: false,
         flashSession:true,
         tekst:'',
-        status:'alert alert-info',
+        status:'alert alert-info'
+     
+       
   },
 
 
  methods:{
+
      flash(tekst){
          if(tekst.danger=='0'){
             this.status='alert alert-info';
@@ -63,6 +67,7 @@ new Vue({
 created(){
     window.events.$on('flash',this.flash);
     this.delayFlashSession();
+
 }
 
 

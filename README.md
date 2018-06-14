@@ -1,3 +1,0 @@
-# forumVue
-
-De actuele repository.

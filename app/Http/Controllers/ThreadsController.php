@@ -63,8 +63,7 @@ class ThreadsController extends Controller
         'title'=> request('title'),
         'channel_id'=> request('channel_id'),
         'body'=> request('body'),
-        'user_id'=> auth()->id(),
-        'slug'=> str_slug(request('title'))
+        'user_id'=> auth()->id()
         ]);
 
         session()->flash('message', 'Uw thread is gepost.');
@@ -110,9 +109,18 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update($channel, Thread $thread)
     {
-        //
+          
+        $this->authorize('update', $thread);
+
+        $this->validateThread();
+
+        $thread->update(request(['body','title']));
+
+        return response($thread);
+
+        
     }
 
 
@@ -145,8 +153,8 @@ class ThreadsController extends Controller
             'channel_id'=> 'required|exists:channels,id' 
         ]);
 
-        resolve(Spam::class)->detect(request('title'), 'title');
-        resolve(Spam::class)->detect(request('body'), 'body');
+         resolve(Spam::class)->detect(request('title'), 'title');
+         resolve(Spam::class)->detect(request('body'), 'body');
     }
 
 

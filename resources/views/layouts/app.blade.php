@@ -52,7 +52,7 @@ window.events= new Vue();
 window.flash = function(message){
 window.events.$emit('flash', message);
 };
-window.load='';
+window.load=false;
 window.auth=@if(Auth::check()) {{Auth::user()->id}} @else false @endif;
 
 </script>

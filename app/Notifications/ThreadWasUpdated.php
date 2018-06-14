@@ -33,7 +33,7 @@ class ThreadWasUpdated extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -44,10 +44,11 @@ class ThreadWasUpdated extends Notification
      */
     public function toMail($notifiable)
     {
+
+        $path = $this->thread->path();
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                  ->markdown('emails.thread-was-updated', ['path'=> $path, 'reply' => $this->reply]);
     }
 
     /**
