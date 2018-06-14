@@ -34,6 +34,7 @@ Browse:
   - refereer naar iemand met @name in het textvak. De users in de DB worden opgehaald en getoond voorbeeld: @Ba -> @Ba$
   - Volg een thread
   - Sluit een thread, er kunnen geen replies meer worden gegeven. (alleen admin kan dit, admin-namen 'gehardcode' in de user model)
+  - aantal spamfilters; keydown en blacklist.(App/Inspections)
 --------------------------------------------
 - Post een reply
   - Voor de thread eigenaar is er de beste anwoord knop per reply.
