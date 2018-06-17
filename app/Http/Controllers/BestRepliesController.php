@@ -12,7 +12,6 @@ class BestRepliesController extends Controller
     
 
         $this->authorize('update', $reply->thread);
-
         //of
         //abort_if($reply->thread->user_id !== auth()->id(), 401);
 

@@ -25,16 +25,15 @@ Vue.component('show-thread', {
         },
  
         updateThread(x){
-            console.log(x);
-            console.log(this.title);
             this.errors={};
             axios.patch(this.path,{body:x, title:this.title, channel_id:this.attribuut.channel.id})
             .then((response) => {
-                console.log(response.data.title)
                 this.body=response.data.body;
                 this.title=response.data.title;
                 this.bewerk=false;
                 flash({message:'Uw thread is geupdate', danger:'0'});
+               history.pushState("","",response.data.slug);
+                this.path='/threads/'+this.attribuut.channel.slug+'/'+ response.data.slug;
             })
             .catch((error) => {
                 console.log(error);

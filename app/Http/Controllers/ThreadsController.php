@@ -111,15 +111,17 @@ class ThreadsController extends Controller
      */
     public function update($channel, Thread $thread)
     {
-          
+
         $this->authorize('update', $thread);
 
         $this->validateThread();
 
+        $slug = request('title');
+
         $thread->update(request(['body','title']));
-
+        $thread->update(['slug' => $slug]);
+   
         return response($thread);
-
         
     }
 

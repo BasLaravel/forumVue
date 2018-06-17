@@ -34,6 +34,8 @@ class Thread extends Model
             $thread->update(['slug' => $thread->title]);
         });
 
+  
+  
 
     }
 
@@ -141,17 +143,15 @@ class Thread extends Model
 
         $slug = str_slug($title);
 
-        if(static::whereSlug($slug)->exists()){
+        if($id = static::where('slug',$slug)->value('id')){
 
-            $slug= "{$slug}-".$this->id;
+            if($id==$this->id){
+                $this->attributes['slug'] = $slug;
+            }else{ $slug= "{$slug}-".$this->id;}
+          
         }
 
         $this->attributes['slug'] = $slug;
     }
-
-
-
-
-
 
 }
