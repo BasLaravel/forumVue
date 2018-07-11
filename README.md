@@ -1,6 +1,6 @@
-# forumVue
+# web forum
 
-Dit is een oefen project genaamd forumVue waar ik aan werk.
+Dit is een web forum dat is afgerond. 
 
 De volgende zaken kunnen jullie in zien, om er een paar te noemen:
 - controllers
