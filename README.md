@@ -1,7 +1,6 @@
 # forumVue
 
-Dit is een oefen project genaamd forumVue waar ik aan werk. Het is nog niet geheel afgerond. Maar zo kunnen jullie mijn code in zien.
-De homepage is 'home'/threads.
+Dit is een oefen project genaamd forumVue waar ik aan werk.
 
 De volgende zaken kunnen jullie in zien, om er een paar te noemen:
 - controllers
@@ -57,13 +56,8 @@ My-profile
  - kies een avatar (layout nog erg basic)
    
 Enkele aandachtspunten:
-De admin 'backend' is nog niet voltooid.
-Op sommige pagina's worden nog teveel queries gedaan. 
-De kanalen moeten nu nog handmatig in de DB worden gezet.
-Emails vang ik op met mailtrap.
 Voor de eerste opzet heb gebruik gemaakt van jQuery. Echter heb ik in deze versie gebruik gemaakt van Vue 2.0 in combinatie met axios. 
 Op dit moment (als ik opnieuw zou starten) zou ik mijn javascript-documenten en wellicht css-documenten met webpack/laravel-mix compileren.
 
-Hopelijk geeft dit enig inzicht.
 Met vriendelijke groet,
 Bas
